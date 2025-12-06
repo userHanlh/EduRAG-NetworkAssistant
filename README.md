@@ -90,7 +90,7 @@ rag_using_llamaindex/
 ```bash
 # 克隆项目
 git clone https://github.com/your-username/rag_using_llamaindex.git
-cd rag_using_llamaindex
+cd network-knowledge-rag
 
 # 安装 Python 依赖
 pip install -r requirements.txt
@@ -115,8 +115,6 @@ LLM_MODEL_PATH = "/your/path/to/Qwen2.5-14B-Instruct/"
 **第二步：执行数据准备和索引构建**
 
 ```bash
-cd rag_for_computer_network_knowledge
-
 # 加载文档、语义分块、向量化并构建 ChromaDB 索引
 python data_preparation.py
 ```
@@ -127,24 +125,12 @@ python data_preparation.py
 - 🔢 向量化（使用 Qwen3-Embedding-4B）
 - 💾 持久化到 ChromaDB
 
-**预期输出：**
-```
-[DataPreparation] 正在加载文档: ./data/books
-[DataPreparation] 成功加载 2 个Document
-[DataPreparation] 正在进行语义分块 (SemanticSplitterNodeParser)...
-[DataPreparation] 语义分块完成，原始 920 个chunk，过滤后保留 895 个
-[TEST] 文档数量: 2
-[TEST] 语义chunk数量: 895
-[TEST] 统计信息: {'total_documents': 2, 'total_chunks': 895, 'avg_chunk_size': 1218}
-Chunks saved to ./data/chunks_output.json
-```
 
 ### 4. 启动 vLLM 推理服务
 
 在 **第一个终端** 启动 vLLM 服务端：
 
 ```bash
-cd rag_for_computer_network_knowledge
 
 # 启动 vLLM 推理服务（4 卡并行）
 python vllm_server.py
@@ -156,56 +142,39 @@ python vllm_server.py
 - 最大序列长度: 4096 tokens
 - GPU 显存利用率: 90%
 
-**服务就绪标志：**
-```
-INFO:     Started server process [xxxxx]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:5499 (Press CTRL+C to quit)
-```
+ 启动 HyDE 查询增强服务
+HyDE (Hypothetical Document Embeddings) 用于查询增强，需要单独启动一个轻量级 vLLM 服务：
 
+```bash
+# 使用 Qwen2.5-7B-Instruct 提供 HyDE 查询转换
+CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
+  --model “你的模型路径” \
+  --served-model-name Qwen2.5-7B-Instruct \
+  --tensor-parallel-size 2 \
+  --max-model-len 4096 \
+  --max-num-batched-tokens 2048 \
+  --enforce-eager \
+  --host 0.0.0.0 \
+  --port 144
 ### 5. 运行问答客户端
 
 在 **第二个终端** 启动交互式客户端：
 
 ```bash
-cd rag_for_computer_network_knowledge
-
 # 启动交互式问答
 python vllm_client.py
 ```
-
-**使用示例：**
-```
-问题: 请解释TCP三次握手的过程
-
-[检索到 10 个相关片段]
-[生成中...]
-
-TCP 三次握手是建立 TCP 连接的过程，具体步骤如下：
-
-1. **第一次握手（SYN）**：客户端向服务器发送 SYN 报文段，请求建立连接...
-2. **第二次握手（SYN+ACK）**：服务器收到 SYN 后，回复 SYN+ACK 报文段...
-3. **第三次握手（ACK）**：客户端收到 SYN+ACK 后，发送 ACK 确认报文...
-
-[平均耗时: 2.76 秒]
-```
-
-**退出方式：**
-- 输入空行（直接按 Enter）退出
 
 ## 📊 评估流程
 
 ### 1. 构建评估数据
 
 ```bash
-cd rag_for_computer_network_knowledge
-
 # 批量生成评估答案（需要先启动 vllm_server.py）
 python evaldata_construct.py
 ```
 
-这将处理 `data/evaluation_data.json` 中的 132 个问题，生成答案和上下文，保存到 `data/evaluation_output.json`。
+这将处理 `data/evaluation_data.json` 中的 个问题，生成答案和上下文，保存到 `data/evaluation_output.json`。
 
 ### 2. 运行 RAGAS 评估
 
@@ -223,15 +192,12 @@ python run_ragas_eval.py
 
 **评估结果：**
 ```
-{'faithfulness': 0.8647, 'context_recall': 0.8764,
- 'context_precision': 0.9237, 'answer_relevancy': 0.6665}
-
-评估结果已保存为 ragas_evaluation.csv
+{'faithfulness': 0.8781, 'context_recall': 0.8764, 'context_precision': 0.9361, 'answer_relevancy': 0.6852}
 ```
 
 ## ⚙️ 配置说明
 
-所有配置集中在 `rag_for_computer_network_knowledge/config.py`，主要配置项：
+所有配置集中在 `config.py`，主要配置项：
 
 ### 模型配置
 
@@ -328,54 +294,6 @@ RRF 融合排序
 - 调用 vLLM 服务生成答案
 - 维护对话历史（最近 5 轮）
 
-## 📈 性能指标
-
-### 系统性能
-
-| 指标 | 数值 |
-|------|-----|
-| 端到端响应时间 | 2.76 秒（平均） |
-| 向量索引大小 | 32 MB |
-| 语义块数量 | 895 个 |
-| 平均块长度 | 1218 字符 |
-| 检索 Top-K | 10 个 |
-
-### RAGAS 评估结果
-
-| 指标 | 基线 | 优化后 |
-|------|-----|--------|
-| Faithfulness | 0.8439 | 0.8647 ↑ |
-| Context Recall | 0.8863 | 0.8764 |
-| Context Precision | 0.9207 | 0.9237 ↑ |
-| Answer Relevancy | 0.6792 | 0.6665 |
-
-## 🎯 技术亮点
-
-### 1. 语义分块技术
-
-传统固定长度分块会破坏语义完整性，本项目使用：
-- **SemanticSplitterNodeParser**：自动识别语义边界
-- **动态阈值**：第 95 百分位语义断裂点
-- **滑动窗口**：考虑前后 3 句的上下文
-
-### 2. 混合检索策略
-
-融合三种检索方式的优势：
-- **HyDE**：提升语义匹配准确性
-- **向量检索**：捕捉语义相似性
-- **BM25**：精确关键词匹配
-
-### 3. vLLM 高性能推理
-
-- **张量并行**：4 卡并行，线性加速
-- **PagedAttention**：高效 KV Cache 管理
-- **异步引擎**：支持批处理和流式输出
-
-### 4. 统一配置管理
-
-- 所有参数集中在 `config.py`
-- 支持参数覆盖（函数参数 > 配置文件）
-- 便于环境切换和调优
 
 ## 🔍 常见问题
 
