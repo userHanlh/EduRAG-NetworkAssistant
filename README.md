@@ -142,7 +142,7 @@ python vllm_server.py
 - 最大序列长度: 4096 tokens
 - GPU 显存利用率: 90%
 
- 启动 HyDE 查询增强服务
+ 在 **第二个终端** 启动 HyDE 查询增强服务
 HyDE (Hypothetical Document Embeddings) 用于查询增强，需要单独启动一个轻量级 vLLM 服务：
 
 ```bash
@@ -156,15 +156,15 @@ CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
   --enforce-eager \
   --host 0.0.0.0 \
   --port 1443
+
+```
 ### 5. 运行问答客户端
 
-在 **第二个终端** 启动交互式客户端：
+ 启动交互式客户端：
 
 ```bash
 # 启动交互式问答
 python vllm_client.py
-```
-
 ## 📊 评估流程
 
 ### 1. 构建评估数据
