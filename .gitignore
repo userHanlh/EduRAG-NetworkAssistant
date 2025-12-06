@@ -41,14 +41,11 @@ env/
 .env
 .env.local
 
-# Data files (large PDF and generated JSON files)
-network-knowledge-rag/data/books/*.pdf
-network-knowledge-rag/data/chunks_output.json
+# Generated output files (can be regenerated)
 network-knowledge-rag/data/evaluation_output.json
 network-knowledge-rag/chroma_storage/
 
 # Model outputs
-*.csv
 ragas_evaluation.csv
 
 # Logs
