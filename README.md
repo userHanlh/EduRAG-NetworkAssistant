@@ -166,7 +166,7 @@ CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
 # 启动交互式问答
 python vllm_client.py
 ## 📊 评估流程
-
+```
 ### 1. 构建评估数据
 
 ```bash
