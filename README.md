@@ -58,7 +58,6 @@
 network-knowledge-rag/
 ├── README.md                           # 项目说明文档
 ├── requirements.txt                    # Python 依赖
-├── 总结.txt                            # 技术选型总结
 │
 └── rag_for_computer_network_knowledge/
     ├── config.py                       # 统一配置文件 ⚙️
