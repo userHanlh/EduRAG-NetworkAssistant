@@ -55,7 +55,7 @@
 ## 📁 项目结构
 
 ```
-rag_using_llamaindex/
+network-knowledge-rag/
 ├── README.md                           # 项目说明文档
 ├── requirements.txt                    # Python 依赖
 ├── 总结.txt                            # 技术选型总结
@@ -89,7 +89,7 @@ rag_using_llamaindex/
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-username/rag_using_llamaindex.git
+git clone https://github.com/your-username/network-knowledge-rag.git
 cd network-knowledge-rag
 
 # 安装 Python 依赖
@@ -98,7 +98,7 @@ pip install -r requirements.txt
 
 ### 2. 配置模型路径
 
-编辑 `rag_for_computer_network_knowledge/config.py`，修改模型路径：
+编辑 `config.py`，修改模型路径：
 
 ```python
 # 根据你的实际路径修改
@@ -110,7 +110,7 @@ LLM_MODEL_PATH = "/your/path/to/Qwen2.5-14B-Instruct/"
 
 **第一步：准备教材 PDF**
 
-将计算机网络教材 PDF 文件放入 `rag_for_computer_network_knowledge/data/books/` 目录。
+将计算机网络教材 PDF 文件放入 `/data/books/` 目录。
 
 **第二步：执行数据准备和索引构建**
 
