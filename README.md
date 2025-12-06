@@ -155,7 +155,7 @@ CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
   --max-num-batched-tokens 2048 \
   --enforce-eager \
   --host 0.0.0.0 \
-  --port 144
+  --port 1443
 ### 5. 运行问答客户端
 
 在 **第二个终端** 启动交互式客户端：
