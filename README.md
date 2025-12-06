@@ -295,47 +295,6 @@ RRF 融合排序
 - 维护对话历史（最近 5 轮）
 
 
-## 🔍 常见问题
-
-### Q1: 如何修改使用的 GPU？
-
-编辑 `config.py`：
-```python
-CUDA_VISIBLE_DEVICES = "0,1,2,3"  # 修改为你的 GPU 编号
-VLLM_TENSOR_PARALLEL_SIZE = 4     # 对应 GPU 数量
-```
-
-### Q2: 如何调整检索质量？
-
-增加检索数量和上下文长度：
-```python
-HYBRID_TOP_K = 15              # 从 10 增加到 15
-MAX_CONTEXT_LENGTH = 6000      # 从 4000 增加到 6000
-```
-
-### Q3: 内存不足怎么办？
-
-降低 GPU 显存利用率和并发数：
-```python
-VLLM_GPU_MEMORY_UTILIZATION = 0.7  # 从 0.9 降到 0.7
-VLLM_MAX_NUM_SEQS = 10            # 从 20 降到 10
-```
-
-### Q4: 如何添加新的教材？
-
-1. 将 PDF 放入 `data/books/` 目录
-2. 重新运行 `python data_preparation.py`
-3. 重启 vLLM 服务和客户端
-
-### Q5: 如何更换其他 LLM 模型？
-
-修改 `config.py` 中的模型路径：
-```python
-LLM_MODEL_PATH = "/path/to/your/model/"
-```
-
-确保模型兼容 vLLM 和 Transformers。
-
 ## 📝 许可证
 
 本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
