@@ -62,8 +62,6 @@ rag_using_llamaindex/
 │
 └── rag_for_computer_network_knowledge/
     ├── config.py                       # 统一配置文件 ⚙️
-    ├── CONFIG_README.md                # 配置文件说明
-    │
     ├── model_load.py                   # 模型加载模块
     ├── data_preparation.py             # 数据准备和语义分块
     ├── index_construction.py           # 向量索引构建
@@ -77,8 +75,8 @@ rag_using_llamaindex/
     │   ├── books/                      # 教材 PDF 文件
     │   │   ├── network_book1.pdf       # 计算机网络教材 1
     │   │   └── network_book2.pdf       # 计算机网络教材 2
-    │   ├── chunks_output.json          # 语义分块结果 (895 chunks)
-    │   ├── evaluation_data.json        # 评估问题集 (132 个)
+    │   ├── chunks_output.json          # 语义分块结果 
+    │   ├── evaluation_data.json        # 评估问题集 (根据谢希仁《计算机网络释疑与习题解答》构建，这里只列举前100个)
     │   └── evaluation_output.json      # 评估结果输出
     │
     └── chroma_storage/                 # ChromaDB 向量数据库
@@ -86,13 +84,6 @@ rag_using_llamaindex/
 ```
 
 ## 🚀 快速开始
-
-### 环境要求
-
-- **Python**: 3.9+
-- **CUDA**: 11.8+ (GPU 推荐)
-- **GPU 显存**: 至少 40GB (推荐 4 × A100/H100)
-- **磁盘空间**: 至少 50GB
 
 ### 1. 安装依赖
 
