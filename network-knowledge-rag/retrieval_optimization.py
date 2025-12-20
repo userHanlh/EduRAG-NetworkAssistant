@@ -26,14 +26,13 @@ logging.basicConfig(
     level=getattr(logging, LOG_LEVEL),
     format=LOG_FORMAT
 )
-# 示例：加载 chunks 数据
+# 加载 chunks 数据
 def load_chunks_from_json(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         chunks_dict = json.load(f)
     
-    # 根据存储的字典重新构建 TextNode（你可能需要根据实际结构重建）
     chunks = [
-        TextNode(text=chunk['text'], metadata=chunk['metadata'])  # 假设 TextNode 构造函数接受 text 和 metadata
+        TextNode(text=chunk['text'], metadata=chunk['metadata'])  # TextNode 构造函数接受 text 和 metadata
         for chunk in chunks_dict
     ]
     
