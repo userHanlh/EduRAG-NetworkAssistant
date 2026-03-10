@@ -156,7 +156,7 @@ CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
   --enforce-eager \
   --host 0.0.0.0 \
   --port 1443
-或者CUDA_VISIBLE_DEVICES=2,3 vllm serve “你的模型路径” \
+或者CUDA_VISIBLE_DEVICES=1,2 vllm serve “你的模型路径” \
   --served-model-name Qwen2.5-7B-Instruct \
   --tensor-parallel-size 2 \
   --max-model-len 4096 \
