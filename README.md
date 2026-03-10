@@ -76,7 +76,7 @@ network-knowledge-rag/
     │   │   ├── network_book1.pdf       # 计算机网络教材 1
     │   │   └── network_book2.pdf       # 计算机网络教材 2
     │   ├── chunks_output.json          # 语义分块结果 
-    │   ├── evaluation_data.json        # 评估问题集 (根据谢希仁《计算机网络释疑与习题解答》构建，这里只列举前100个)
+    │   ├── evaluation_data.json        # 评估问题集 (根据谢希仁《计算机网络释疑与习题解答》、计算机网络原理（谢希仁第八版）、计算机网络：自顶向下方法 （原书第七版）构建，由于版权问题，这里只列举部分谢希仁《计算机网络释疑与习题解答》课后习题)
     │   └── evaluation_output.json      # 评估结果输出
     │
     └── chroma_storage/                 # ChromaDB 向量数据库
@@ -211,9 +211,9 @@ CUDA_VISIBLE_DEVICES = "4,5,6,7"  # 使用的 GPU 编号
 ### 检索配置
 
 ```python
-DENSE_TOP_K = 5          # 向量检索 Top-K
-BM25_TOP_K = 5           # BM25 检索 Top-K
-HYBRID_TOP_K = 10        # 最终返回 Top-K
+DENSE_TOP_K = 15          # 向量检索 Top-K
+BM25_TOP_K = 15           # BM25 检索 Top-K
+HYBRID_TOP_K = 8        # 最终返回 Top-K
 MAX_CONTEXT_LENGTH = 4000  # 最大上下文长度（字符）
 ```
 
