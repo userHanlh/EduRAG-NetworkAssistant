@@ -146,10 +146,10 @@ python vllm_server.py
 HyDE (Hypothetical Document Embeddings) 用于查询增强，需要单独启动一个轻量级 vLLM 服务：
 
 ```bash
-# 使用 Qwen2.5-7B-Instruct 提供 HyDE 查询转换
+# 使用 Qwen2.5-14B-Instruct 提供 HyDE 查询转换
 CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
   --model “你的模型路径” \
-  --served-model-name Qwen2.5-7B-Instruct \
+  --served-model-name Qwen2.5-14B-Instruct \
   --tensor-parallel-size 2 \
   --max-model-len 4096 \
   --max-num-batched-tokens 2048 \
@@ -157,7 +157,7 @@ CUDA_VISIBLE_DEVICES=1,2 python -m vllm.entrypoints.openai.api_server \
   --host 0.0.0.0 \
   --port 1443
 或者CUDA_VISIBLE_DEVICES=1,2 vllm serve “你的模型路径” \
-  --served-model-name Qwen2.5-7B-Instruct \
+  --served-model-name Qwen2.5-14B-Instruct \
   --tensor-parallel-size 2 \
   --max-model-len 4096 \
   --max-num-batched-tokens 2048 \
@@ -218,16 +218,16 @@ CUDA_VISIBLE_DEVICES = "4,5,6,7"  # 使用的 GPU 编号
 ### 检索配置
 
 ```python
-DENSE_TOP_K = 15          # 向量检索 Top-K
-BM25_TOP_K = 15           # BM25 检索 Top-K
-HYBRID_TOP_K = 8        # 最终返回 Top-K
+DENSE_TOP_K = 10          # 向量检索 Top-K
+BM25_TOP_K = 10           # BM25 检索 Top-K
+HYBRID_TOP_K = 5        # 最终返回 Top-K
 MAX_CONTEXT_LENGTH = 4000  # 最大上下文长度（字符）
 ```
 
 ### vLLM 配置
 
 ```python
-VLLM_TENSOR_PARALLEL_SIZE = 4      # 张量并行（GPU 数量）
+VLLM_TENSOR_PARALLEL_SIZE = 2      # 张量并行（GPU 数量）
 VLLM_MAX_MODEL_LEN = 4096          # 最大序列长度
 VLLM_GPU_MEMORY_UTILIZATION = 0.9  # GPU 显存利用率
 VLLM_MAX_NUM_SEQS = 20             # 最大并发数
